@@ -64,6 +64,7 @@ class CentralVCriticLoss(nn.Module):
         assert tformat in ["bs*t*v"], "invalid input format!"
 
         # calculate mean-square loss
+        mask = mask.bool()
         ret = ((inputs[mask] - target.detach()[mask])**2).mean()
 
         output_tformat = "s" # scalar
@@ -292,7 +293,7 @@ class CentralVLearner(BasicLearner):
 
             critic_mean = _naninfmean(output_critic["vvalue"])
 
-            critic_loss_arr.append(np.asscalar(critic_loss.data.cpu().numpy()))
+            critic_loss_arr.append(critic_loss.data.cpu().numpy().item())
             critic_mean_arr.append(critic_mean)
             target_critic_mean_arr.append(target_critic_mean)
             critic_grad_norm_arr.append(critic_grad_norm)

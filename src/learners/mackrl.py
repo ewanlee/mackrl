@@ -41,7 +41,7 @@ class MACKRLPolicyLoss(nn.Module):
         _pad_zero(mask, tformat, seq_lens)
         mask[:, :, :-1, :] = mask[:, :, 1:, :] # account for terminal NaNs of targets
         mask[:, :, -1, :] = 0.0  # handles case of seq_len=limit_len
-        advantages[~mask] = 0.0
+        advantages[~mask.bool()] = 0.0
 
         _pad(policies, tformat, seq_lens, 1.0)
         policy_mask = (policies < 10e-40)

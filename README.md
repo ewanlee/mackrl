@@ -34,8 +34,8 @@ maps folder (which you will have to create first).
 Run one of the EXPERIMENTs from the folder `src/config/experiments`
 on a specific GPU using some special PARAMETERS:
 ```
-cd fastmarl/src
-../run.sh <GPU> python3 main.py --exp_name=<EXPERIMENT> with <PARAMETERS>
+cd fastmarl/
+./run.sh <GPU> python3 src/main.py --exp_name=<EXPERIMENT> with <PARAMETERS>
 ```
 
 Keep an eye on your docker containers, they will be named

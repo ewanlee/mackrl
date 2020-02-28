@@ -61,11 +61,11 @@ class BatchEpisodeBuffer():
         else:
             self.sizes = sizes
 
-        n_transition_cols = sum([np.asscalar(np.prod(self.sizes[_df["name"]]))
+        n_transition_cols = sum([np.prod(self.sizes[_df["name"]]).item()
                                  for _df in data_scheme.scheme_list
                                  if _df.get("switch", True) and _df.get("scope", "transition")=="transition"])
 
-        n_episode_cols = sum([np.asscalar(np.prod(self.sizes[_df["name"]]))
+        n_episode_cols = sum([np.prod(self.sizes[_df["name"]]).item()
                                  for _df in data_scheme.scheme_list
                                  if _df.get("switch", True) and _df.get("scope", "transition")=="episode"])
 
@@ -85,16 +85,18 @@ class BatchEpisodeBuffer():
         col_counter = 0
         for _i, _df in enumerate([_df for _df in data_scheme.scheme_list
                                 if _df.get("switch", True) and _df.get("scope", "transition")=="transition"]):
-            self.columns._transition[_df["name"]] = (col_counter, col_counter + np.asscalar(np.prod(self.sizes[_df["name"]])))
-            col_counter += np.asscalar(np.prod(self.sizes[_df["name"]]))
+            self.columns._transition[_df["name"]] = (col_counter, col_counter + np.prod(self.sizes[_df["name"]]).item())
+            # col_counter += np.asscalar(np.prod(self.sizes[_df["name"]]))
+            col_counter += np.prod(self.sizes[_df["name"]]).item()
 
         #create a dictionary with column end and start positions - episode data
         self.columns._episode = {}
         col_counter = 0
         for _i, _df in enumerate([_df for _df in data_scheme.scheme_list
                                   if _df.get("switch", True) and _df.get("scope", "transition")=="episode"]):
-            self.columns._episode[_df["name"]] = (col_counter, col_counter + np.asscalar(np.prod(self.sizes[_df["name"]])))
-            col_counter += np.asscalar(np.prod(self.sizes[_df["name"]]))
+            self.columns._episode[_df["name"]] = (col_counter, col_counter + np.prod(self.sizes[_df["name"]]).item())
+            # col_counter += np.asscalar(np.prod(self.sizes[_df["name"]]))
+            col_counter += np.prod(self.sizes[_df["name"]]).item()
 
         #fill in special elements, such as agent_ids
         for _col, _vals in self.columns._transition.items():
@@ -537,10 +539,10 @@ class BatchEpisodeBuffer():
                 entropies = [np.nanmean(np.nansum((-th.log(self["{}__agent{}".format(policy_label, _aid)][0]) *
                                                    self["{}__agent{}".format(policy_label, _aid)][0]).cpu().numpy(), axis=2))
                              for _aid in range(self.n_agents)]
-            return np.asscalar(np.mean(entropies))
+            return np.mean(entropies).item()
         elif label in ["qvalues_entropy"]:
             entropies = [ np.nanmean(np.nansum((-th.log(self["qvalues__agent{}".format(_aid)][0]) * self["qvalues__agent{}".format(_aid)][0]).cpu().numpy(), axis=2)) for _aid in range(self.n_agents)]
-            return np.asscalar(np.mean(entropies))
+            return np.mean(entropies).item()
         elif label in ["td_lambda_targets"]:
             gamma = kwargs.get("gamma")
             td_lambda = kwargs.get("td_lambda")

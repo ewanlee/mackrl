@@ -12,7 +12,7 @@ else
 fi 
 
 config="mackrl/neurips_8m"
-with_args="t_max=5000000  use_hdf_logger=False save_episode_samples=False  save_model=True save_model_interval=100000 use_tensorboard=False pair_partition_shuffle=True pair_partition_max_iter=1 "
+with_args="t_max=5000000  use_hdf_logger=False save_episode_samples=False  save_model=True save_model_interval=100000 use_tensorboard=True pair_partition_shuffle=True pair_partition_max_iter=1 "
 with_args_local=""
 
 ${FASTMARL_PATH}/exp_scripts/run.sh "${target}" "${config}" "${with_args}" "${with_args_local}" "${tag}" ${reps}

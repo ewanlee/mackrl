@@ -11,7 +11,7 @@ else
    reps=$3
 fi 
 
-config="mackrl/neurips_2s3z"
+config="mackrl/neurips_3s5z"
 with_args="t_max=5000000  use_hdf_logger=False save_episode_samples=False save_model=True save_model_interval=100000 use_tensorboard=True"
 with_args_local=""
 

@@ -12,13 +12,21 @@ else
   cmd=docker
 fi
 
-NV_GPU="$GPU" ${cmd} run -i -d \
+# NV_GPU="$GPU" ${cmd} run -i -d \
+#     --name $name \
+#     --cap-add=SYS_PTRACE \
+#     --net host \
+#     --user $(id -u) \
+#     -v `pwd`:/fastmarl \
+#     -v /tmp/.X11-unix:/tmp/.X11-unix \
+#     -e DISPLAY=unix$DISPLAY \
+#     -t fastmarl/mackrl4neurips \
+#     ${@:2}
+
+docker run \
+    --gpus device=$GPU \
     --name $name \
-    --cap-add=SYS_PTRACE \
-    --net host \
-    --user $(id -u) \
+    --user $(id -u):$(id -g) \
     -v `pwd`:/fastmarl \
-    -v /tmp/.X11-unix:/tmp/.X11-unix \
-    -e DISPLAY=unix$DISPLAY \
     -t fastmarl/mackrl4neurips \
     ${@:2}

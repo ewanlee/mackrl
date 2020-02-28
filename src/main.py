@@ -3,6 +3,7 @@ import os
 from os.path import dirname, abspath
 import pymongo
 from sacred import Experiment, SETTINGS
+SETTINGS.CONFIG.READ_ONLY_CONFIG = False
 from sacred.observers import FileStorageObserver
 from sacred.observers import MongoObserver
 from sacred.utils import apply_backspaces_and_linefeeds
@@ -12,6 +13,19 @@ import torch as th
 from components.transforms import _merge_dicts
 from run import run
 from utils.logging import get_logger
+
+import traceback
+import warnings
+import sys
+
+def warn_with_traceback(message, category, filename, lineno, file=None, line=None):
+
+    log = file if hasattr(file,'write') else sys.stderr
+    traceback.print_stack(file=log)
+    log.write(warnings.formatwarning(message, category, filename, lineno, line))
+
+# warnings.showwarning = warn_with_traceback
+# warnings.simplefilter("always")
 
 SETTINGS['CAPTURE_MODE'] = "fd" # set to "no" if you want to see stdout/stderr in console
 logger = get_logger()
@@ -31,7 +45,8 @@ def setup_file_observer():
 
 @ex.main
 def my_main(_run, _config, _log, env_args):
-    global mongo_client
+    # global mongo_client
+    mongo_client = None
 
     # Setting the random seed throughout the modules
     np.random.seed(_config["seed"])
@@ -50,8 +65,8 @@ if __name__ == '__main__':
     from copy import deepcopy
     from distutils.dir_util import copy_tree
     import os
-    if os.path.exists("/fastmarl/3rdparty") and os.path.exists("/fastmarl/src"): # de facto only happens if called in docker file
-
+    if os.path.exists("/fastmarl/3rdparty") and \
+        os.path.exists("/fastmarl/src"): # de facto only happens if called in docker file
 
         fromDirectory = "/fastmarl/src/envs/starcraft2/maps"
 
@@ -84,6 +99,7 @@ if __name__ == '__main__':
     exp_dic = None
     if exp_name is not None:
         from config.experiments import REGISTRY as exp_REGISTRY
+        print(exp_REGISTRY)
         assert exp_name in exp_REGISTRY, "Unknown experiment name: {}".format(exp_name)
         exp_dic = exp_REGISTRY[exp_name](None, logger)
         if "defaults" in exp_dic:

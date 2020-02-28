@@ -1,4 +1,4 @@
-FROM nvidia/cuda:8.0-cudnn7-devel-ubuntu16.04
+FROM nvidia/cuda:9.0-cudnn7-devel-ubuntu16.04
 # FROM ubuntu:16.04
 MAINTAINER ANONYMOUS
 
@@ -23,10 +23,10 @@ RUN curl -sk https://raw.githubusercontent.com/torch/distro/master/install-deps 
 #Install python3 pip3
 RUN apt-get update
 RUN apt-get update && apt-get -y install python3 python3-pip
-RUN pip3 install --upgrade pip
-RUN pip3 install numpy scipy pyyaml matplotlib
-RUN pip3 install imageio
-RUN pip3 install tensorboard-logger
+RUN pip3 install --upgrade pip -i https://pypi.tuna.tsinghua.edu.cn/simple
+RUN pip3 install numpy scipy pyyaml matplotlib -i https://pypi.tuna.tsinghua.edu.cn/simple
+RUN pip3 install imageio -i https://pypi.tuna.tsinghua.edu.cn/simple
+RUN pip3 install tensorboard-logger -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 RUN mkdir /install
 WORKDIR /install
@@ -36,7 +36,7 @@ WORKDIR /install
 #### -------------------------------------------------------------------
 
 # Install pymongo
-RUN pip3 install pymongo
+RUN pip3 install pymongo -i https://pypi.tuna.tsinghua.edu.cn/simple 
 
 #### -------------------------------------------------------------------
 #### install pysc2 #(from Mika fork)
@@ -53,32 +53,32 @@ RUN pip3 install /install/pysc2/
 #### install Sacred
 #### -------------------------------------------------------------------
 
-RUN pip3 install setuptools
+RUN pip3 install --upgrade setuptools -i https://pypi.tuna.tsinghua.edu.cn/simple
 RUN git clone https://github.com/idsia/sacred.git /install/sacred && cd /install/sacred && python3 setup.py install
 
 #### -------------------------------------------------------------------
 #### final steps
 #### -------------------------------------------------------------------
-RUN pip3 install pygame
+RUN pip3 install pygame -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 #### -------------------------------------------------------------------
 #### Plotting tools
 #### -------------------------------------------------------------------
 
 # RUN apt-get -y install ipython ipython-notebook
-RUN pip3 install statsmodels pandas seaborn
+RUN pip3 install statsmodels pandas seaborn -i https://pypi.tuna.tsinghua.edu.cn/simple
 RUN mkdir /pool && echo "export PATH=$PATH:'/pool/pool'" >> ~/.bashrc
 
-RUN pip3 install cloudpickle ruamel.yaml
+RUN pip3 install cloudpickle ruamel.yaml -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 RUN apt-get install -y libhdf5-serial-dev cmake
 RUN git clone https://github.com/Blosc/c-blosc.git /install/c-blosc && cd /install/c-blosc && cmake -DCMAKE_INSTALL_PREFIX=/usr/local && cmake --build . --target install
-RUN pip3 install tables h5py
+RUN pip3 install tables==3.5.2 h5py
 
 #### -------------------------------------------------------------------
 #### install tensorflow
 #### -------------------------------------------------------------------
-RUN pip3 install tensorflow-gpu
+RUN pip3 install tensorflow-gpu==1.15.0
 #RUN pip3 install --upgrade https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow_gpu-1.6.0-cp34-cp34m-linux_x86_64.whl
 
 #### -------------------------------------------------------------------

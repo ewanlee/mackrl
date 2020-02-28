@@ -17,7 +17,7 @@ env_args:
   fully_observable: False
   heuristic_function: False
   intersection_global_view: False
-  map_name: 3m_3m
+  map_name: 3m
   measure_fps: True
   move_amount: 5
   relax_pairwise_aa: False
@@ -84,7 +84,7 @@ test_nepisode: 30
 use_cuda: True
 use_hdf_logger: False
 use_replay_buffer: False
-use_tensorboard: False
+use_tensorboard: True
 
 
 

@@ -13,11 +13,11 @@ defaults: default mackrl sc2
 env: sc2
 env_args:
   difficulty: "3"
-  episode_limit: 60
+  episode_limit: 80
   fully_observable: False
   heuristic_function: False
   intersection_global_view: False
-  map_name: 2s3z
+  map_name: 3s5z
   measure_fps: True
   move_amount: 5
   relax_pairwise_aa: False
@@ -62,7 +62,7 @@ lr_agent: 0.0005
 lr_critic: 0.0005
 mongodb_profile: gandalf_fastmarl
 multiagent_controller: mackrl_mac
-n_critic_learner_reps: 60
+n_critic_learner_reps: 80
 n_loops_per_thread_or_sub_or_main_process: 1
 n_pair_samples: 1
 n_step_return_n: 1

@@ -7,7 +7,7 @@ then
 fi
 
 echo "EXP_DIR: $EXP_DIR"
-cd $EXP_DIR/mackrl
+cd $EXP_DIR/fastmarl
 
 mkdir 3rdparty
 cd 3rdparty
@@ -17,14 +17,17 @@ echo 'SC2PATH is set to '$SC2PATH
 
 if [ ! -d $SC2PATH ]; then
         echo 'StarCraftII is not installed. Installing now ...';
-        wget http://blzdistsc2-a.akamaihd.net/Linux/SC2.4.6.2.69232.zip
-        unzip -P iagreetotheeula SC2.4.6.2.69232.zip
-        rm -rf SC2.4.6.2.69232.zip
+        wget http://blzdistsc2-a.akamaihd.net/Linux/SC2.3.16.1.zip
+        #http://blzdistsc2-a.akamaihd.net/Linux/SC2.4.1.2.60604_2018_05_16.zip
+        unzip -P iagreetotheeula SC2.3.16.1.zip
+        # SC2.4.1.2.60604_2018_05_16.zip
+        #rm -rf SC2.4.1.2.60604_2018_05_16.zip
+        rm -rf SC2.3.16.1.zip
 else
         echo 'StarCraftII is already installed.'
 fi
 
-echo 'Adding SMAC maps.'
+echo 'Adding custom maps.'
 MAP_DIR="$SC2PATH/Maps/Melee/"
 echo 'MAP_DIR is set to '$MAP_DIR
 
@@ -33,10 +36,8 @@ if [ ! -d $MAP_DIR ]; then
 fi
 
 cd ..
-wget https://github.com/oxwhirl/smac/releases/download/v0.1-beta1/SMAC_Maps.zip
-unzip SMAC_Maps.zip
-mv SMAC_Maps/* $MAP_DIR
-rm -rf SMAC_Maps.zip
+cp src/envs/starcraft2/maps/* $MAP_DIR
 
-echo 'StarCraft II and SMAC are installed.'
+echo 'StarCraftII is installed.'
+
 
